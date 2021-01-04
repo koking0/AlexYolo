@@ -1,4 +1,5 @@
 import torch
+
 from torch import nn
 
 
@@ -9,12 +10,12 @@ class YoloV2Model(nn.Module):
 
         self.convLayer1 = nn.Sequential(
             nn.Conv2d(in_channels=3, out_channels=64, kernel_size=7, stride=2, padding=7 // 2),
-            nn.LeakyReLU(negative_slope=0.1),
+            nn.LeakyReLU(negative_slope=0.1, inplace=False),
             nn.MaxPool2d(kernel_size=2, stride=2),
         )
         self.convLayer2 = nn.Sequential(
             nn.Conv2d(in_channels=64, out_channels=192, kernel_size=3, stride=1, padding=3 // 2),
-            nn.LeakyReLU(negative_slope=0.1),
+            nn.LeakyReLU(negative_slope=0.1, inplace=False),
             nn.MaxPool2d(kernel_size=2, stride=2),
         )
         self.convLayer3 = nn.Sequential(
@@ -22,7 +23,7 @@ class YoloV2Model(nn.Module):
             nn.Conv2d(in_channels=128, out_channels=256, kernel_size=3, stride=1, padding=3 // 2),
             nn.Conv2d(in_channels=256, out_channels=256, kernel_size=1, stride=1, padding=1 // 2),
             nn.Conv2d(in_channels=256, out_channels=512, kernel_size=3, stride=1, padding=3 // 2),
-            nn.LeakyReLU(negative_slope=0.1),
+            nn.LeakyReLU(negative_slope=0.1, inplace=False),
             nn.MaxPool2d(kernel_size=2, stride=2),
         )
         self.convLayer4 = nn.Sequential(
@@ -36,7 +37,7 @@ class YoloV2Model(nn.Module):
             nn.Conv2d(in_channels=256, out_channels=512, kernel_size=3, stride=1, padding=3 // 2),
             nn.Conv2d(in_channels=512, out_channels=512, kernel_size=1, stride=1, padding=1 // 2),
             nn.Conv2d(in_channels=512, out_channels=1024, kernel_size=3, stride=1, padding=3 // 2),
-            nn.LeakyReLU(negative_slope=0.1),
+            nn.LeakyReLU(negative_slope=0.1, inplace=False),
             nn.MaxPool2d(kernel_size=2, stride=2),
         )
         self.convLayer5 = nn.Sequential(
@@ -46,12 +47,12 @@ class YoloV2Model(nn.Module):
             nn.Conv2d(in_channels=512, out_channels=1024, kernel_size=3, stride=1, padding=3 // 2),
             nn.Conv2d(in_channels=1024, out_channels=1024, kernel_size=3, stride=1, padding=3 // 2),
             nn.Conv2d(in_channels=1024, out_channels=1024, kernel_size=3, stride=2, padding=3 // 2),
-            nn.LeakyReLU(negative_slope=0.1),
+            nn.LeakyReLU(negative_slope=0.1, inplace=False),
         )
         self.convLayer6 = nn.Sequential(
             nn.Conv2d(in_channels=1024, out_channels=1024, kernel_size=3, stride=1, padding=3 // 2),
             nn.Conv2d(in_channels=1024, out_channels=1024, kernel_size=3, stride=1, padding=3 // 2),
-            nn.LeakyReLU(negative_slope=0.1),
+            nn.LeakyReLU(negative_slope=0.1, inplace=False),
         )
         self.flatten = nn.Sequential(
             nn.Flatten(),
@@ -59,7 +60,7 @@ class YoloV2Model(nn.Module):
         self.connLayer1 = nn.Sequential(
             nn.Linear(in_features=self.S * self.S * 1024, out_features=4096),
             nn.Dropout(p=0.5),
-            nn.LeakyReLU(negative_slope=0.1),
+            nn.LeakyReLU(negative_slope=0.1, inplace=False),
         )
         self.connLayer2 = nn.Sequential(
             nn.Linear(in_features=4096, out_features=self.S * self.S * (self.C + self.B * 5)),
